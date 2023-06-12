@@ -62,7 +62,8 @@ static void i386_detect_memory(void)
 static void boot_map_region(pde_t *pgdir, uintptr_t va, size_t size, physaddr_t pa, int perm);
 static void check_page_free_list(bool only_low_memory);
 static void check_page_alloc(void);
-static void check_kern_pgdir(void);
+//static
+void check_kern_pgdir(void);
 static physaddr_t check_va2pa(pde_t *pgdir, uintptr_t va);
 static void check_page(void);
 static void check_page_installed_pgdir(void);
@@ -132,7 +133,7 @@ void mem_init(void)
 	i386_detect_memory();
 
 	// Remove this line when you're ready to test this function.
-	panic("mem_init: This function is not finished\n");
+	//panic("mem_init: This function is not finished\n");
 
 	//////////////////////////////////////////////////////////////////////
 	// create initial page directory.
@@ -762,7 +763,8 @@ check_page_alloc(void)
 // but it is a pretty good sanity check.
 //
 
-static void
+//static
+void
 check_kern_pgdir(void)
 {
 	uint32_t i, n;
