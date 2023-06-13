@@ -209,11 +209,7 @@ vprintfmt(void (*putch)(int, void*), void *putdat, const char *fmt, va_list ap)
             num=getuint(&ap, lflag); // unsigned integer but with base 8            
             base=8;
             goto number;
-			putch('X', putdat);
-			putch('X', putdat);
-			putch('X', putdat);
-			break;
-
+				
 		// pointer
 		case 'p':
 			putch('0', putdat);
