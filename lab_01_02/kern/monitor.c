@@ -61,36 +61,42 @@ mon_backtrace(int argc, char **argv, struct Trapframe *tf)
 	// Your code here.
     // display all the base pointers ebp, eip i argumente funkcija
 
-    int reg_ebp;
-    int* ebp_ptr=NULL;
+    //int reg_ebp;
+ 	
+
+    uint32_t* ebp_ptr, eip;
     struct Eipdebuginfo info;
 
-    reg_ebp=read_esp();
-    ebp_ptr=(int*) reg_ebp ;  // typecast adress into int
+    // wrong read function, now 2/5 works
+
+    ebp_ptr=(uint32_t*)read_ebp();  // typecast adress into int
     
 
-    cprintf("Backtracing current STACK functions : ");
+    cprintf("Backtracing STACK ");
 
-    while( ebp_ptr != NULL)
+	// while noq 0x0 not NULL
+
+    while( ebp_ptr != 0x0)
     {
-
-    cprintf("Stack bactrace: \n\r epb %x eip %x args  %08x %08x %08x %08x ", (int)ebp_ptr, *(ebp_ptr+1), *(ebp_ptr+2),
+    // fixed eip, now not naively changining in printf 
+    eip=*(ebp_ptr+1);
+    cprintf("\n ebp %08x eip %08x args %08x %08x %08x %08x %08x  ", ebp_ptr, eip, *(ebp_ptr+2), // 8 digit hexx
      *(ebp_ptr+2), *(ebp_ptr+3), *(ebp_ptr+4), *(ebp_ptr+5), *(ebp_ptr+6));
 	
-	debuginfo_eip(*(ebp_ptr + 1), &info);
-
-	cprintf("%s:%d: %.*s+%d\n", info.eip_file, info.eip_line, info.eip_fn_namelen, info.eip_fn_name,
-	 *(ebp_ptr + 1) - info.eip_fn_addr);
+	debuginfo_eip((uintptr_t)eip, &info); 
+	
+	
+	cprintf("\n %s:%d: %.*s+%d\n", info.eip_file, info.eip_line, info.eip_fn_namelen, info.eip_fn_name,
+	 eip - info.eip_fn_addr);
 		
-	ebp_ptr = (int *)*ebp_ptr;
-
-
+	ebp_ptr = (uint32_t*)*ebp_ptr;
 
 	}    
+
+
         
 	return 0;
 }
-
 
 
 /***** Kernel monitor command interpreter *****/
