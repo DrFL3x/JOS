@@ -76,7 +76,7 @@ mon_backtrace(int argc, char **argv, struct Trapframe *tf)
 
 	// while noq 0x0 not NULL
 
-    while( ebp_ptr != 0x0)
+    while( ebp_ptr != NULL)
     {
     // fixed eip, now not naively changining in printf 
     eip=*(ebp_ptr+1);

@@ -243,41 +243,6 @@ mem_init(void)
 // memory via the page_free_list.
 //
 
-#if 0
-void
-page_init(void)
-{
-	// The example code here marks all physical pages as free.
-	// However this is not truly the case.  What memory is free?
-	//  1) Mark physical page 0 as in use.
-	//     This way we preserve the real-mode IDT and BIOS structures
-	//     in case we ever need them.  (Currently we don't, but...)
-	//  2) The rest of base memory, [PGSIZE, npages_basemem * PGSIZE)
-	//     is free.
-	//  3) Then comes the IO hole [IOPHYSMEM, EXTPHYSMEM), which must
-	//     never be allocated.
-	//  4) Then extended memory [EXTPHYSMEM, ...).
-	//     Some of it is in use, some is free. Where is the kernel
-	//     in physical memory?  Which pages are already in use for
-	//     page tables and other data structures?
-	//
-	// Change the code to reflect this.
-	// NB: DO NOT actually touch the physical memory corresponding to
-	// free pages!
-	size_t i, 
-	size_t pgnum = PGNUM(PADDR(boot_alloc(0))); // page number of (physical adress (next free))
-	for (i = 1; i < npages; i++)  // from 1 to amount of all phy pages
-	{
-		if (i >= npages_basemem && i < pgnum)
-			continue;
-		pages[i].pp_ref = 0;
-		pages[i].pp_link = page_free_list;
-		page_free_list = &pages[i];
-	}
-
-}
-
-#endif
 
 void
 page_init(void)
@@ -344,18 +309,6 @@ page_init(void)
 
 
 
-
-	// for(i=1 ; i < npages ; i++)
-	// {
-	// 	if(i >= npages_basemem && i < page_number )
-	// 	continue;
-	// 		pages[i].pp_ref = 0; 				
-	// 		pages[i].pp_link = page_free_list;  // next page free on page free list
-	// 		page_free_list = &pages[i];	        //set free list on i-th page 
-	// }
-
-
-//
 // Allocates a physical page.  If (alloc_flags & ALLOC_ZERO), fills the entire
 // returned physical page with '\0' bytes.  Does NOT increment the reference
 // count of the page - the caller must do these if necessary (either explicitly
@@ -519,7 +472,6 @@ boot_map_region(pde_t *pgdir, uintptr_t va, size_t size, physaddr_t pa, int perm
 		//pa+=PGSIZE;
 	}
 }
-//
 // Map the physical page 'pp' at virtual address 'va'.
 // The permissions (the low 12 bits) of the page table entry
 // should be set to 'perm|PTE_P'.
