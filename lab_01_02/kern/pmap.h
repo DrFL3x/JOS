@@ -8,6 +8,7 @@
 
 #include <inc/memlayout.h>
 #include <inc/assert.h>
+struct Env;
 
 extern char bootstacktop[], bootstack[];
 
@@ -15,9 +16,6 @@ extern struct PageInfo *pages;
 extern size_t npages;
 
 extern pde_t *kern_pgdir;
-
-//static void check_page_alloc(void);
-//static void check_kern_pgdir(void);
 
 
 /* This macro takes a kernel virtual address -- an address that points above
@@ -65,10 +63,13 @@ void	page_decref(struct PageInfo *pp);
 
 void	tlb_invalidate(pde_t *pgdir, void *va);
 
+int	user_mem_check(struct Env *env, const void *va, size_t len, int perm);
+void	user_mem_assert(struct Env *env, const void *va, size_t len, int perm);
+
 static inline physaddr_t
 page2pa(struct PageInfo *pp)
 {
-	return (pp - pages) << PGSHIFT;   // substracting pointer blocks size [ sizeof(struct PageInfo) ]  , distance between them in type
+	return (pp - pages) << PGSHIFT;
 }
 
 static inline struct PageInfo*
@@ -82,10 +83,9 @@ pa2page(physaddr_t pa)
 static inline void*
 page2kva(struct PageInfo *pp)
 {
-	return KADDR(page2pa(pp));  // send adress, shift it and return vritual if sent proper physical adress
+	return KADDR(page2pa(pp));
 }
 
 pte_t *pgdir_walk(pde_t *pgdir, const void *va, int create);
 
 #endif /* !JOS_KERN_PMAP_H */
-

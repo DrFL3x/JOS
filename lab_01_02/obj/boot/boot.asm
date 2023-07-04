@@ -165,7 +165,7 @@ readsect(void *dst, uint32_t offset)
 static inline void
 outb(int port, uint8_t data)
 {
-	asm volatile("outb %0,%w1" : : "a" (data), "d" (port)); // $ sign for iemmediate value of adress // % sign for register values
+	asm volatile("outb %0,%w1" : : "a" (data), "d" (port));
     7c85:	b0 01                	mov    $0x1,%al
     7c87:	ba f2 01 00 00       	mov    $0x1f2,%edx
     7c8c:	ee                   	out    %al,(%dx)

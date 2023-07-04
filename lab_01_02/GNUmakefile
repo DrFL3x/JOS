@@ -67,6 +67,7 @@ endif
 GDBPORT	:= $(shell expr `id -u` % 5000 + 25000)
 
 CC	:= $(GCCPREFIX)gcc -pipe
+GDB	:= $(GCCPREFIX)gdb
 AS	:= $(GCCPREFIX)as
 AR	:= $(GCCPREFIX)ar
 LD	:= $(GCCPREFIX)ld
@@ -74,7 +75,7 @@ OBJCOPY	:= $(GCCPREFIX)objcopy
 OBJDUMP	:= $(GCCPREFIX)objdump
 NM	:= $(GCCPREFIX)nm
 
-# Native commands # add -Wall to NATIVE_FLAGS
+# Native commands
 NCC	:= gcc $(CC_VER) -pipe
 NATIVE_CFLAGS := $(CFLAGS) $(DEFS) $(LABDEFS) -I$(TOP) -MD -Wall
 TAR	:= gtar
@@ -83,8 +84,6 @@ PERL	:= perl
 # Compiler flags
 # -fno-builtin is required to avoid refs to undefined functions in the kernel.
 # Only optimize to -O1 to discourage inlining, which complicates backtraces.
-
-#Add -Wall to longest array of CFLAGS (Last one)
 CFLAGS := $(CFLAGS) $(DEFS) $(LABDEFS) -O1 -fno-builtin -I$(TOP) -MD
 CFLAGS += -fno-omit-frame-pointer
 CFLAGS += -std=gnu99
@@ -123,9 +122,7 @@ all:
 	   $(OBJDIR)/user/%.o
 
 KERN_CFLAGS := $(CFLAGS) -DJOS_KERNEL -gstabs
-KERN_CFLAGS += -ggdb
 USER_CFLAGS := $(CFLAGS) -DJOS_USER -gstabs
-USER_CFLAGS += -ggdb
 
 # Update .vars.X if variable X has changed since the last make run.
 #
@@ -141,6 +138,8 @@ $(OBJDIR)/.vars.%: FORCE
 # Include Makefrags for subdirectories
 include boot/Makefrag
 include kern/Makefrag
+include lib/Makefrag
+include user/Makefrag
 
 
 QEMUOPTS = -drive file=$(OBJDIR)/kern/kernel.img,index=0,media=disk,format=raw -serial mon:stdio -gdb tcp::$(GDBPORT)
@@ -152,7 +151,7 @@ QEMUOPTS += $(QEMUEXTRA)
 	sed "s/localhost:1234/localhost:$(GDBPORT)/" < $^ > $@
 
 gdb:
-	gdb -n -x .gdbinit
+	$(GDB) -n -x .gdbinit
 
 pre-qemu: .gdbinit
 
@@ -301,6 +300,22 @@ myapi.key:
 #handin-prep:
 #	@./handin-prep
 
+# For test runs
+
+prep-%:
+	$(V)$(MAKE) "INIT_CFLAGS=${INIT_CFLAGS} -DTEST=`case $* in *_*) echo $*;; *) echo user_$*;; esac`" $(IMAGES)
+
+run-%-nox-gdb: prep-% pre-qemu
+	$(QEMU) -nographic $(QEMUOPTS) -S
+
+run-%-gdb: prep-% pre-qemu
+	$(QEMU) $(QEMUOPTS) -S
+
+run-%-nox: prep-% pre-qemu
+	$(QEMU) -nographic $(QEMUOPTS)
+
+run-%: prep-% pre-qemu
+	$(QEMU) $(QEMUOPTS)
 
 # This magic automatically generates makefile dependencies
 # for header files included from C source files we compile,

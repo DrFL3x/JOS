@@ -30,7 +30,7 @@
 #define PGNUM(la)	(((uintptr_t) (la)) >> PTXSHIFT)
 
 // page directory index
-#define PDX(la)		((((uintptr_t) (la)) >> PDXSHIFT) & 0x3FF) // we take&consider only first ten bits & make sure just first 10 with 0x3FF
+#define PDX(la)		((((uintptr_t) (la)) >> PDXSHIFT) & 0x3FF)
 
 // page table index
 #define PTX(la)		((((uintptr_t) (la)) >> PTXSHIFT) & 0x3FF)

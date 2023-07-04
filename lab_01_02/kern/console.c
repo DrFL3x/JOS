@@ -6,11 +6,7 @@
 #include <inc/string.h>
 #include <inc/assert.h>
 
-
 #include <kern/console.h>
-//#include <kern/pmap.h>
-
-//#include "pmap.c"
 
 static void cons_intr(int (*proc)(void));
 static void cons_putc(int c);
@@ -478,7 +474,3 @@ iscons(int fdnum)
 	// used by readline
 	return 1;
 }
-
-
-//check_page_alloc();
-//check_kern_pgdir(); 

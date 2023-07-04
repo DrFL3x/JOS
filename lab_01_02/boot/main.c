@@ -1,9 +1,6 @@
 #include <inc/x86.h>
 #include <inc/elf.h>
 
-//#include <kern/pmap.h>
-//#include "pmap.c"
-
 /**********************************************************************
  * This a dirt simple boot loader, whose sole job is to boot
  * an ELF kernel image from the first IDE hard disk.
@@ -67,11 +64,6 @@ bad:
 	outw(0x8A00, 0x8E00);
 	while (1)
 		/* do nothing */;
-
-//	check_page_alloc();
-//	check_kern_pgdir(); 
-
-		
 }
 
 // Read 'count' bytes at 'offset' from kernel into physical address 'pa'.
@@ -130,5 +122,4 @@ readsect(void *dst, uint32_t offset)
 	// read a sector
 	insl(0x1F0, dst, SECTSIZE/4);
 }
-
 
