@@ -61,46 +61,46 @@ enabled interrupts: 1 2
 [00001007] stresssched on CPU 0
 [00001007] exiting gracefully
 [00001007] free env 00001007
-[00001009] stresssched on CPU 0
-[00001009] exiting gracefully
-[00001009] free env 00001009
 [00001008] stresssched on CPU 0
 [00001008] exiting gracefully
 [00001008] free env 00001008
-[0000100b] stresssched on CPU 0
-[0000100b] exiting gracefully
-[0000100b] free env 0000100b
+[00001009] stresssched on CPU 0
+[00001009] exiting gracefully
+[00001009] free env 00001009
 [0000100a] stresssched on CPU 0
-[0000100a] exiting gracefully
-[0000100a] free env 0000100a
 [0000100c] stresssched on CPU 0
 [0000100c] exiting gracefully
 [0000100c] free env 0000100c
+[0000100a] exiting gracefully
+[0000100a] free env 0000100a
+[0000100b] stresssched on CPU 0
+[0000100b] exiting gracefully
+[0000100b] free env 0000100b
 [0000100d] stresssched on CPU 0
 [0000100d] exiting gracefully
 [0000100d] free env 0000100d
 [0000100e] stresssched on CPU 0
+[0000100e] exiting gracefully
+[0000100e] free env 0000100e
 [0000100f] stresssched on CPU 0
 [0000100f] exiting gracefully
 [0000100f] free env 0000100f
-[0000100e] exiting gracefully
-[0000100e] free env 0000100e
-[00001010] stresssched on CPU 0
-[00001010] exiting gracefully
-[00001010] free env 00001010
 [00001011] stresssched on CPU 0
 [00001011] exiting gracefully
 [00001011] free env 00001011
+[00001010] stresssched on CPU 0
+[00001010] exiting gracefully
+[00001010] free env 00001010
 [00001012] stresssched on CPU 0
 [00001012] exiting gracefully
 [00001012] free env 00001012
 [00001013] stresssched on CPU 0
+[00001013] exiting gracefully
+[00001013] free env 00001013
 [00001014] stresssched on CPU 0
 [00001014] exiting gracefully
 [00001014] free env 00001014
-[00001013] exiting gracefully
-[00001013] free env 00001013
 No runnable environments in the system!
 Welcome to the JOS kernel monitor!
 Type 'help' for a list of commands.
-qemu-system-i386: terminating on signal 15 from pid 146420 (make)
+qemu-system-i386: terminating on signal 15 from pid 165248 (make)
