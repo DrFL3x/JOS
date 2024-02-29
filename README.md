@@ -4,7 +4,7 @@
  
  ```diff
 -JOS consists of basic ideas implemented, such as 
- ```diff
+ ```
 
 - Bootstrapping
 - Paging and basic memory manipulaiton  
