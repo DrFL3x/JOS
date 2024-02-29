@@ -4,8 +4,13 @@
 
 JOS consists of basic ideas implemented, such as 
 
- ''diff
- 
+ ```diff
+- text in red
++ text in green
+! text in orange
+# text in gray
+@@ text in purple (and bold)@@
+
 - Bootstrapping
 - Paging and basic memory manipulaiton  
 - interrupts and exception handling  
